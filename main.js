@@ -25,7 +25,7 @@ function goBtnHandler() {
   }
 }
 
-let contacts = localStorage.getitem("contacts");
+let contacts = loadContacts();
 
 // MENU FUNCTIONS
 function displayContacts() {
@@ -34,6 +34,10 @@ function displayContacts() {
 
 function addContact() {
   console.log("Add Contact");
+  let description = prompt("enter contact name");
+  tasks.push(newTask(description));
+  saveTasks();
+  displayAll();
 }
 
 function removeContact() {
@@ -46,4 +50,17 @@ function displayByName() {
 
 function displayByCountry() {
   console.log("Display by Country");
+}
+
+function loadContacts() {
+  let contactsStr = localStorage.getItem("contacts");
+  return JSON.parse(contactsStr) ?? [];
+}
+
+function displayAll() {
+  let outputStr = "";
+  for (let i = 0; i < contacts.length; i++) {
+    outputStr += getContactsHTMLStr(contacts[i], i);
+  }
+  outputEl.innerHTML = outputStr;
 }
