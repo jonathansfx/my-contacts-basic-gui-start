@@ -26,6 +26,7 @@ function goBtnHandler() {
 }
 
 let contacts = loadContacts();
+displayContacts();
 
 // MENU FUNCTIONS
 function displayContacts() {
@@ -34,9 +35,9 @@ function displayContacts() {
 
 function addContact() {
   console.log("Add Contact");
-  let description = prompt("enter contact name");
-  tasks.push(newTask(description));
-  saveTasks();
+  let name = prompt("enter contact name");
+  contacts.push(newContact(name));
+  saveContacts();
   displayAll();
 }
 
@@ -52,15 +53,32 @@ function displayByCountry() {
   console.log("Display by Country");
 }
 
+// Helpers
+
 function loadContacts() {
-  let contactsStr = localStorage.getItem("contacts");
-  return JSON.parse(contactsStr) ?? [];
+  let jsonContacts = localStorage.getItem("contacts");
+  return JSON.parse(jsonContacts) ?? [];
 }
 
 function displayAll() {
   let outputStr = "";
   for (let i = 0; i < contacts.length; i++) {
-    outputStr += getContactsHTMLStr(contacts[i], i);
+    outputStr += getContactHTMLStr(contacts[i], i);
   }
   outputEl.innerHTML = outputStr;
+}
+
+function saveContacts() {
+  localStorage.setItem("contacts", JSON.stringify(contacts));
+}
+
+function newContact(contactName) {
+  return {
+    name: contactName,
+  };
+}
+
+function getContactHTMLStr(contact, i) {
+  return `<div class = "${contact}">
+  ${i}: ${contact.name}</div>`;
 }
