@@ -13,7 +13,7 @@ function goBtnHandler() {
   let selection = menuEl.value;
 
   if (selection === "display-all") {
-    displayContacts();
+    displayAll();
   } else if (selection === "add") {
     addContact();
   } else if (selection === "remove") {
@@ -26,23 +26,35 @@ function goBtnHandler() {
 }
 
 let contacts = loadContacts();
-displayContacts();
+displayAll();
 
 // MENU FUNCTIONS
-function displayContacts() {
+function displayAll() {
   console.log("Display Contacts");
 }
 
 function addContact() {
   console.log("Add Contact");
   let name = prompt("enter contact name");
-  contacts.push(newContact(name));
+  let email = prompt("enter the email of your contact:");
+  let phoneNumber = prompt("enter the phone number of your contact:");
+  let country = prompt("enter the country of your contact:");
+  contacts.push(newContact(name, email, phoneNumber, country));
   saveContacts();
   displayAll();
 }
 
 function removeContact() {
   console.log("Remove Contact");
+  let index = +prompt("Enter # of Contact:");
+  if (index >= 0 && index < contacts.length) {
+    // Valid index -> Remove
+    contacts.splice(index, 1);
+    saveContacts();
+    displayAll();
+  } else {
+    alert("Invalid Contact #");
+  }
 }
 
 function displayByName() {
@@ -72,9 +84,17 @@ function saveContacts() {
   localStorage.setItem("contacts", JSON.stringify(contacts));
 }
 
-function newContact(contactName) {
+function newContact(
+  contactName,
+  contactEmail,
+  contactPhoneNumber,
+  contactCountry
+) {
   return {
     name: contactName,
+    email: contactEmail,
+    phoneNumber: contactPhoneNumber,
+    country: contactCountry,
   };
 }
 
