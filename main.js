@@ -13,35 +13,39 @@ function goBtnHandler() {
   let selection = menuEl.value;
 
   if (selection === "display-all") {
-    displayAll();
+    displayAllContacts();
   } else if (selection === "add") {
     addContact();
   } else if (selection === "remove") {
     removeContact();
   } else if (selection === "display-name") {
-    displayByName();
+    displayContactsByName();
   } else if (selection === "display-country") {
-    displayByCountry();
+    displayContactsByCountry();
   }
 }
 
 let contacts = loadContacts();
-displayAll();
+displayAllContacts();
 
 // MENU FUNCTIONS
-function displayAll() {
-  console.log("Display Contacts");
+function displayAllContacts() {
+  let outputStr = "";
+  for (let i = 0; i < contacts.length; i++) {
+    outputStr += getContactHTMLStr(contacts[i], i);
+  }
+  outputEl.innerHTML = outputStr;
 }
 
 function addContact() {
   console.log("Add Contact");
-  let name = prompt("enter contact name");
-  let email = prompt("enter the email of your contact:");
-  let phoneNumber = prompt("enter the phone number of your contact:");
-  let country = prompt("enter the country of your contact:");
+  let name = prompt("Enter contact name:");
+  let email = prompt("Enter the email of your contact:");
+  let phoneNumber = prompt("Enter the phone number of your contact:");
+  let country = prompt("Enter the country of your contact:");
   contacts.push(newContact(name, email, phoneNumber, country));
   saveContacts();
-  displayAll();
+  displayAllContacts();
 }
 
 function removeContact() {
@@ -51,20 +55,37 @@ function removeContact() {
     // Valid index -> Remove
     contacts.splice(index, 1);
     saveContacts();
-    displayAll();
+    displayAllContacts();
   } else {
     alert("Invalid Contact #");
   }
 }
 
-function displayByName() {
+function displayContactsByName() {
   console.log("Display by Name");
+  let name = prompt("Enter contact name:");
+  let filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(name.toLowerCase())
+  );
+  let outputStr = "";
+  for (let i = 0; i < filteredContacts.length; i++) {
+    outputStr += getContactHTMLStr(filteredContacts[i], i);
+  }
+  outputEl.innerHTML = outputStr;
 }
 
-function displayByCountry() {
+function displayContactsByCountry() {
   console.log("Display by Country");
+  let country = prompt("Enter country name:");
+  let filteredContacts = contacts.filter((contact) =>
+    contact.country.toLowerCase().includes(country.toLowerCase())
+  );
+  let outputStr = "";
+  for (let i = 0; i < filteredContacts.length; i++) {
+    outputStr += getContactHTMLStr(filteredContacts[i], i);
+  }
+  outputEl.innerHTML = outputStr;
 }
-
 // Helpers
 
 function loadContacts() {
@@ -72,24 +93,11 @@ function loadContacts() {
   return JSON.parse(jsonContacts) ?? [];
 }
 
-function displayAll() {
-  let outputStr = "";
-  for (let i = 0; i < contacts.length; i++) {
-    outputStr += getContactHTMLStr(contacts[i], i);
-  }
-  outputEl.innerHTML = outputStr;
-}
-
 function saveContacts() {
   localStorage.setItem("contacts", JSON.stringify(contacts));
 }
 
-function newContact(
-  contactName,
-  contactEmail,
-  contactPhoneNumber,
-  contactCountry
-) {
+function newContact(contactName, contactEmail, contactPhoneNumber, contactCountry) {
   return {
     name: contactName,
     email: contactEmail,
@@ -99,6 +107,5 @@ function newContact(
 }
 
 function getContactHTMLStr(contact, i) {
-  return `<div class = "${contact}">
-  ${i}: ${contact.name}</div>`;
+  return `<div class="contact">${i}: ${contact.name}</div>`;
 }
