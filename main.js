@@ -106,6 +106,6 @@ function newContact(contactName, contactEmail, contactPhoneNumber, contactCountr
   };
 }
 
-function getContactHTMLStr(contact, i) {
-  return `<div class="contact">${i}: ${contact.name}</div>`;
-}
+  function getContactHTMLStr(contact, i) {
+    return `<div class="contact"><strong>${i}: ${contact.name}<strong><p>${contact.email}<p> <p>${contact.phoneNumber} (${contact.country})<p></div>`;
+  }
