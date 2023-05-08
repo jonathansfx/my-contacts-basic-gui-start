@@ -97,7 +97,12 @@ function saveContacts() {
   localStorage.setItem("contacts", JSON.stringify(contacts));
 }
 
-function newContact(contactName, contactEmail, contactPhoneNumber, contactCountry) {
+function newContact(
+  contactName,
+  contactEmail,
+  contactPhoneNumber,
+  contactCountry
+) {
   return {
     name: contactName,
     email: contactEmail,
@@ -106,6 +111,6 @@ function newContact(contactName, contactEmail, contactPhoneNumber, contactCountr
   };
 }
 
-  function getContactHTMLStr(contact, i) {
-    return `<div class="contact"><strong>${i}: ${contact.name}<strong><p>${contact.email}<p> <p>${contact.phoneNumber} (${contact.country})<p></div>`;
-  }
+function getContactHTMLStr(contact, i) {
+  return `<div class="contact"><strong>${i}: ${contact.name}<strong><p>${contact.email}<p><p>${contact.phoneNumber} (${contact.country})<p></div>`;
+}
